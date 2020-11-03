@@ -99,7 +99,8 @@ struct SstFileWriter::Rep {
     file_info.largest_key.assign(user_key.data(), user_key.size());
     file_info.file_size = builder->FileSize();
 
-    return InvalidatePageCache(false /* closing */);
+    InvalidatePageCache(false /* closing */).PermitUncheckedError();
+    return Status::OK();
   }
 
   Status DeleteRange(const Slice& begin_key, const Slice& end_key) {
